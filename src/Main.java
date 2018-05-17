@@ -5,7 +5,6 @@ public class Main {
         boolean isSolved = false;
         do {
             isSolved = solver.solve();
-            System.out.println(Board.getBoardInstance());
         } while (!isSolved);
 
 

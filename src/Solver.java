@@ -8,12 +8,12 @@ public class Solver {
     private List<Backtrack> backtrack = new ArrayList<>();
 
     boolean solve() throws CloneNotSupportedException {
-            solveObviousCells();
-            if (board.isBoardSolved()) {
-                System.out.println(board);
-                return true;
-            }
-            guessValue(board.returnFirstEmptyCell());
+        solveObviousCells();
+        if (board.isBoardSolved()) {
+            System.out.println(board);
+            return true;
+        }
+        guessValue(board.returnFirstEmptyCell());
         return (board.isBoardSolved());
     }
 
@@ -26,17 +26,21 @@ public class Solver {
                 }
             }
         }
+        System.out.println(board);
     }
 
     boolean guessValue(Cell testedCell) throws CloneNotSupportedException {
         Board clonedBoard = board.clone();
         Cell clonedCell = testedCell.clone();
-        for (Integer value : testedCell.getPossible()) {
+        List<Integer> checkedValues = new ArrayList<>(testedCell.getPossible());
+
+        //Possible operations on iterated collection!
+
+        for (Integer value : checkedValues) {
             backtrack.add(new Backtrack(clonedBoard, clonedCell, value));
             testedCell.setValue(value);
             testedCell.removeOtherPossibleValues(value);
-            System.out.println(board);
-            if(!solve()) {
+            if (!solve()) {
                 recreateStateFromBacktrack();
             } else {
                 return true;
@@ -46,9 +50,9 @@ public class Solver {
     }
 
     private boolean solveCell(Cell testedCell) {
-        List<Integer> foundValues = new ArrayList<>(board.getValuesFromConnectedCells(testedCell));
-        List<Integer> valuesToRemove = new ArrayList<>();
         if (testedCell.getValue() == 0) {
+            List<Integer> foundValues = new ArrayList<>(board.getValuesFromConnectedCells(testedCell));
+            List<Integer> valuesToRemove = new ArrayList<>();
             for (Integer value : testedCell.getPossible()) {
                 if (foundValues.contains(value)) {
                     valuesToRemove.add(value);
@@ -83,13 +87,13 @@ public class Solver {
             System.out.println("Sudoku error");
             System.exit(-111);
         } else {
-            int row = backtrack.get(backtrack.size()-1).getCell().getRow();
-            int column = backtrack.get(backtrack.size()-1).getCell().getColumn();
-            int value = backtrack.get(backtrack.size()-1).getCell().getValue();
-            board = backtrack.get(backtrack.size()-1).getBoard();
-            board.getCellWithGivenCoordinates(row, column).setPossible(backtrack.get(backtrack.size()-1).getCell().getPossible());
+            int row = backtrack.get(backtrack.size() - 1).getCell().getRow();
+            int column = backtrack.get(backtrack.size() - 1).getCell().getColumn();
+            int value = backtrack.get(backtrack.size() - 1).getValue();
+            board = backtrack.get(backtrack.size() - 1).getBoard();
+            board.getCellWithGivenCoordinates(row, column).setPossible(backtrack.get(backtrack.size() - 1).getCell().getPossible());
             board.getCellWithGivenCoordinates(row, column).removeValue(value);
-            backtrack.remove(backtrack.size()-1);
+            backtrack.remove(backtrack.size() - 1);
         }
     }
 }
