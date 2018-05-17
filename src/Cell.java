@@ -7,11 +7,11 @@ public class Cell implements Cloneable {
 
     private List<Integer> possible = new ArrayList<>();
     private int value = 0;
-    private int row = 0;
-    private int column = 0;
+    private int row;
+    private int column;
+    private int section;
 
-
-    public Cell(int row, int column) {
+    Cell(int row, int column) {
         for (int i = 1; i < 10; i++) {
             possible.add(i);
         }
@@ -19,19 +19,19 @@ public class Cell implements Cloneable {
         this.column = column;
     }
 
-    public List<Integer> getPossible() {
+    List<Integer> getPossible() {
         return possible;
     }
 
-    public void setPossible(List<Integer> possible) {
+    void setPossible(List<Integer> possible) {
         this.possible = possible;
     }
 
-    public int getValue() {
+    int getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    void setValue(int value) {
         this.value = value;
     }
 
@@ -51,16 +51,8 @@ public class Cell implements Cloneable {
         return row;
     }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
     public int getColumn() {
         return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
     }
 
     @Override
@@ -81,9 +73,9 @@ public class Cell implements Cloneable {
     public Cell clone() throws CloneNotSupportedException {
         Cell clonedCell = (Cell) super.clone();
         clonedCell.possible = new ArrayList<>();
-        for (Integer value : possible) {
-            clonedCell.possible.add(value);
-        }
+        clonedCell.possible.addAll(possible);
         return clonedCell;
     }
+
+
 }

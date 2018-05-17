@@ -4,21 +4,21 @@ public class Backtrack {
     private Cell cell;
     private int value;
 
-    public Backtrack(Board board, Cell cell, int value) {
+    Backtrack(Board board, Cell cell, int value) {
         this.board = board;
         this.cell = cell;
         this.value = value;
     }
 
-    public Board getBoard() {
+    Board getBoard() {
         return board;
     }
 
-    public Cell getCell() {
+    Cell getCell() {
         return cell;
     }
 
-    public int getValue() {
+    int getValue() {
         return value;
     }
 }

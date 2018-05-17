@@ -18,38 +18,28 @@ public class Solver {
     }
 
     private void solveObviousCells() {
-        boolean isAnythingSolved = false;
         for (int rowNumber = 0; rowNumber < 9; rowNumber++) {
             for (int columnNumber = 0; columnNumber < 9; columnNumber++) {
-                if (solveCell(board.getCellWithGivenCoordinates(rowNumber, columnNumber))) {
-                    isAnythingSolved = true;
-                }
+                solveCell(board.getCellWithGivenCoordinates(rowNumber, columnNumber));
             }
         }
-        System.out.println(board);
     }
 
-    boolean guessValue(Cell testedCell) throws CloneNotSupportedException {
+    private void guessValue(Cell testedCell) throws CloneNotSupportedException {
         Board clonedBoard = board.clone();
         Cell clonedCell = testedCell.clone();
         List<Integer> checkedValues = new ArrayList<>(testedCell.getPossible());
-
-        //Possible operations on iterated collection!
-
         for (Integer value : checkedValues) {
             backtrack.add(new Backtrack(clonedBoard, clonedCell, value));
             testedCell.setValue(value);
             testedCell.removeOtherPossibleValues(value);
             if (!solve()) {
                 recreateStateFromBacktrack();
-            } else {
-                return true;
             }
         }
-        return false;
     }
 
-    private boolean solveCell(Cell testedCell) {
+    private void solveCell(Cell testedCell) {
         if (testedCell.getValue() == 0) {
             List<Integer> foundValues = new ArrayList<>(board.getValuesFromConnectedCells(testedCell));
             List<Integer> valuesToRemove = new ArrayList<>();
@@ -59,7 +49,7 @@ public class Solver {
                 } else if (validateValueVersusPossibleValues(value, testedCell)) {
                     testedCell.setValue(value);
                     testedCell.removeOtherPossibleValues(value);
-                    return true;
+                    return;
                 }
             }
             testedCell.getPossible().removeAll(valuesToRemove);
@@ -69,7 +59,7 @@ public class Solver {
                 System.exit(-666);
             }
         }
-        return false;
+        return;
     }
 
     private boolean validateValueVersusPossibleValues(Integer value, Cell cell) {
@@ -82,8 +72,8 @@ public class Solver {
         return !foundValues.contains(value);
     }
 
-    void recreateStateFromBacktrack() {
-        if (backtrack.size() == 0 || backtrack == null) {
+    private void recreateStateFromBacktrack() {
+        if (backtrack.size() == 0) {
             System.out.println("Sudoku error");
             System.exit(-111);
         } else {
