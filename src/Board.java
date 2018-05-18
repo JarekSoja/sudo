@@ -16,6 +16,16 @@ public class Board implements Cloneable {
         return board;
     }
 
+    void clearBoard() {
+        rows = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            rows.add(new ArrayList<>());
+            for (int j = 0; j < 9; j++) {
+                getRows().get(i).add(new Cell(i, j));
+            }
+        }
+    }
+
     private Board() {
         for (int i = 0; i < 9; i++) {
             rows.add(new ArrayList<>());
