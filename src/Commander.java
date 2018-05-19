@@ -25,8 +25,7 @@ class Commander {
         System.out.println("Provided sudoku is erroneous. End of current game.");
     }
 
-    static void boardSolved() {
-        System.out.println("Board is solved.");
-        System.out.println(Board.getBoardInstance());
+    static void goodByeMessage() {
+        System.out.println("Good bye! See you soon!");
     }
 }

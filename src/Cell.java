@@ -9,7 +9,6 @@ public class Cell implements Cloneable {
     private int value = 0;
     private int row;
     private int column;
-    private int section;
 
     Cell(int row, int column) {
         for (int i = 1; i < 10; i++) {

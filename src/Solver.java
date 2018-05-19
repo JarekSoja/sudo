@@ -4,13 +4,17 @@ import java.util.Set;
 
 public class Solver {
 
-    private Board board = Board.getBoardInstance();
-    private List<Backtrack> backtrack = new ArrayList<>();
+    private Board board;
+    private List<Backtrack> backtrack;
+
+    Solver() {
+        this.board = new Board();
+        this.backtrack = new ArrayList<>();
+    }
 
     boolean solve() throws CloneNotSupportedException {
         solveObviousCells();
         if (board.isBoardSolved()) {
-            System.out.println(board);
             return true;
         }
         guessValue(board.returnFirstEmptyCell());
@@ -59,7 +63,6 @@ public class Solver {
                 System.exit(-666);
             }
         }
-        return;
     }
 
     private boolean validateValueVersusPossibleValues(Integer value, Cell cell) {
@@ -70,6 +73,10 @@ public class Solver {
     private boolean validateValueVersusActualValues(Integer value, Cell cell) {
         Set<Integer> foundValues = board.getValuesFromConnectedCells(cell);
         return !foundValues.contains(value);
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     private void recreateStateFromBacktrack() {

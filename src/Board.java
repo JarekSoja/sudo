@@ -3,30 +3,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Board implements Cloneable {
-
-    private static Board board = null;
+class Board implements Cloneable {
 
     private List<List<Cell>> rows = new ArrayList<>();
 
-    static Board getBoardInstance() {
-        if (board == null) {
-            board = new Board();
-        }
-        return board;
-    }
-
-    void clearBoard() {
-        rows = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            rows.add(new ArrayList<>());
-            for (int j = 0; j < 9; j++) {
-                getRows().get(i).add(new Cell(i, j));
-            }
-        }
-    }
-
-    private Board() {
+    Board() {
         for (int i = 0; i < 9; i++) {
             rows.add(new ArrayList<>());
             for (int j = 0; j < 9; j++) {

@@ -2,22 +2,33 @@ import java.util.Scanner;
 
 public class Processor {
 
-    private static Scanner reader = new Scanner(System.in);
-    private static Solver solver = new Solver();
+    private Scanner reader = new Scanner(System.in);
+    private Solver solver = new Solver();
 
-    static void parseInput() throws CloneNotSupportedException {
-        while(true) {
+    void parseInput() throws CloneNotSupportedException {
+        boolean isDone = false;
+        while(!isDone) {
             Commander.menu();
             String input = reader.next();
             switch (input.toLowerCase()) {
                 case "sudoku":
-                    solver.solve();
+                    if (solver.solve()) {
+                        System.out.println(solver.getBoard());
+                    } else {
+                        Commander.erroneousSudokuMessage();
+                    }
                     break;
                 case "n":
-                    newGame();
+                    System.out.println("We are starting new game.");
+                    solver = new Solver();
+                    System.out.println(solver.getBoard());
+                    break;
+                case "b":
+                    System.out.println(solver.getBoard());
                     break;
                 case "x":
-                    exitGame();
+                    isDone = true;
+                    break;
                 default:
                     if (input.chars().allMatch(Character::isDigit) && input.length() == 3) {
                             char[] inputArr = input.toCharArray();
@@ -28,21 +39,10 @@ public class Processor {
         }
     }
 
-    private static void placeUserDigitOnBoard(int column, int row, int value) {
-        Cell parsedCell = Board.getBoardInstance().getCellWithGivenCoordinates(row - 1, column - 1);
+    private void placeUserDigitOnBoard(int column, int row, int value) {
+        Cell parsedCell = solver.getBoard().getCellWithGivenCoordinates(row - 1, column - 1);
         parsedCell.setValue(value);
         parsedCell.removeOtherPossibleValues(value);
-        System.out.println(Board.getBoardInstance());
+        System.out.println(solver.getBoard());
     }
-
-    private static void newGame() {
-        Board.getBoardInstance().clearBoard();
-        System.out.println(Board.getBoardInstance());
-        System.out.println("We are starting new game.");
-    }
-
-    private static void exitGame() {
-        System.exit(1);
-    }
-
 }
